@@ -1,0 +1,32 @@
+
+.homeSection {
+    height: calc(100dvh - var(--nav-height));
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: clip;
+    flex-direction: column;
+}
+
+.heading {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.canvas {
+    position: absolute;
+    filter: blur(20px);
+    opacity: 0.7;
+    z-index: -1;
+}
+
+.canvasBlurred {
+    position: absolute;
+    filter: blur(80px);
+    opacity: 0.4;
+    z-index: -2;
+}

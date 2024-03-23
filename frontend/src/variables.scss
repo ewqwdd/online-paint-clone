@@ -1,0 +1,15 @@
+:root {
+    --nav-height: 58px;
+    --primary: #646cff;
+    --primary-hover: #535bf2;
+    --foreground: #1a1a1a;
+    --foreground-lighter: #232323;
+}
+
+
+@media (prefers-color-scheme: light) {
+    :root {
+      --primary-hover: #747bff;
+      --foreground: #f9f9f9;
+    }
+}
