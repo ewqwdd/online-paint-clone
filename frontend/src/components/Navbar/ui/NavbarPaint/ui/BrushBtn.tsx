@@ -14,16 +14,16 @@ const BrushBtn = observer(function () {
     setRange(Number(e.target.value));
   }, []);
 
-
   const setBrush = useCallback(() => {
-    CanvasState.socket && ToolState.setTool(new Brush(CanvasState.canvas, CanvasState.socket));
+    CanvasState.socket &&
+      CanvasState.canvas &&
+      ToolState.setTool(new Brush(CanvasState.canvas, CanvasState.socket));
   }, []);
-
 
   return (
     <ButtonWrapper Icon={<BrushSvg />} onClick={setBrush}>
-        <span>{range}</span>
-        <input type="range" value={range} max={100} min={1} onChange={lineWidthChange} />
+      <span>{range}</span>
+      <input type="range" value={range} max={100} min={1} onChange={lineWidthChange} />
     </ButtonWrapper>
   );
 });

@@ -16,7 +16,7 @@ const EraserBtn = observer(function () {
 
 
   const setEraser = useCallback(() => {
-    CanvasState.socket && ToolState.setTool(new Eraser(CanvasState.canvas, CanvasState.socket));
+    CanvasState.socket && CanvasState.canvas && ToolState.setTool(new Eraser(CanvasState.canvas, CanvasState.socket));
   }, []);
 
 

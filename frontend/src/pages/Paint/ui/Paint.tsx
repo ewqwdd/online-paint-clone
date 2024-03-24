@@ -24,6 +24,7 @@ const Paint = observer(function () {
   }, 2000)
 
   const addUndoList = useCallback(() => {
+    if (!CanvasState.canvas) return
     CanvasState.undoPush(CanvasState.canvas.toDataURL());
   }, []);
 
@@ -44,6 +45,7 @@ const Paint = observer(function () {
     CanvasState.setCanvas(canvasRef.current!);
     CanvasState.setSize(wrapperRef.current!.offsetWidth * 0.95, wrapperRef.current!.offsetHeight * 0.95);
     axios.get<string>(import.meta.env.VITE_REST + "image").then((val) => {
+      if (!CanvasState.canvas) return
       const img = new Image();
       img.src = val.data;
       CanvasState.canvas.getContext('2d')?.drawImage(img, 0, 0, CanvasState.canvas.width, CanvasState.canvas.height);
@@ -58,6 +60,7 @@ const Paint = observer(function () {
   }, []);
 
   useEffect(() => {
+    if (!CanvasState.canvas) return
     if (CanvasState.username) {
       const socket = new WebSocket(import.meta.env.VITE_API);
       const ms: Message = {

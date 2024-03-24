@@ -21,11 +21,11 @@ const NavbarPaint = observer(function () {
   );
 
   const setSquare = useCallback(() => {
-    CanvasState.socket && ToolState.setTool(new Square(CanvasState.canvas, CanvasState.socket));
+    CanvasState.socket && CanvasState.canvas && ToolState.setTool(new Square(CanvasState.canvas, CanvasState.socket));
   }, []);
 
   const setEllipse = useCallback(() => {
-    CanvasState.socket && ToolState.setTool(new Ellipse(CanvasState.canvas, CanvasState.socket));
+    CanvasState.socket && CanvasState.canvas && ToolState.setTool(new Ellipse(CanvasState.canvas, CanvasState.socket));
   }, []);
 
   const undo = useCallback(() => {
@@ -49,6 +49,7 @@ const NavbarPaint = observer(function () {
   }, []);
   
   const save = useCallback(() => {
+      if (!CanvasState.canvas) return
       const link = document.createElement('a');
       link.download = 'canvas.png';
       link.href = CanvasState.canvas.toDataURL()
