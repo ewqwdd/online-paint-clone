@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 export class CanvasState {
-    canvas: HTMLCanvasElement
+    canvas?: HTMLCanvasElement
     undoList: string[] = []
     redoList: string[] = []
     username?: string
@@ -43,6 +43,7 @@ export class CanvasState {
     }
 
     undo() {
+        if (!this.canvas) return
         const ctx = this.canvas.getContext('2d')
         const prev = this.undoList.pop()!
 
@@ -54,8 +55,8 @@ export class CanvasState {
             const image = new Image()
             image.src = dataUrl
             image.onload = () => {
-                ctx?.clearRect(0, 0, this.canvas.width, this.canvas.height)
-                ctx?.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
+                ctx?.clearRect(0, 0, this.canvas!.width, this.canvas!.height)
+                ctx?.drawImage(image, 0, 0, this.canvas!.width, this.canvas!.height)
             }
         } else {
             ctx?.clearRect(0, 0, this.canvas.width, this.canvas.height)
@@ -63,6 +64,7 @@ export class CanvasState {
     }
 
     redo() {
+        if (!this.canvas) return
         const ctx = this.canvas.getContext('2d')
         if (this.redoList.length > 0) {
             const prev = this.redoList.pop()!
@@ -70,8 +72,8 @@ export class CanvasState {
             const image = new Image()
             image.src = prev
             image.onload = () => {
-                ctx?.clearRect(0, 0, this.canvas.width, this.canvas.height)
-                ctx?.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
+                ctx?.clearRect(0, 0, this.canvas!.width, this.canvas!.height)
+                ctx?.drawImage(image, 0, 0, this.canvas!.width, this.canvas!.height)
             }
         }
     }

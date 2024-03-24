@@ -2,9 +2,9 @@ import { MutableRefObject, useCallback, useRef } from "react";
 
 export const useDebounce = (cb: (...args: unknown[]) => void, time?: number): [
     (...args: unknown[]) => void,
-    MutableRefObject<NodeJS.Timeout | undefined>
+    MutableRefObject<ReturnType<typeof setTimeout> | undefined>
 ] => {
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const fn = useCallback(
     (...args: unknown[]) => {
