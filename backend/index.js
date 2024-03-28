@@ -3,15 +3,20 @@ const { writeFileSync, readFileSync } = require('fs');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser')
+const { createServer } = require('https');
+const fs = require('fs')
 
 const app = express()
-const expressWs = require('express-ws')(app);
 app.use(cors());
-const aWss = expressWs.getWss()
 require('dotenv').config()
-
 app.use(bodyParser.json())
-
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'key.pem'), 'utf-8'),
+    cert: fs.readFileSync(path.join(__dirname, 'cert.pem'), 'utf-8')
+  };
+const httpsServer = createServer(options, app);
+const expressWs = require('express-ws')(app, httpsServer);
+const aWss = expressWs.getWss()
 
 app.ws('/', (ws, req) => {
     console.log('connection is established')
@@ -69,6 +74,6 @@ app.post('/image', (req, res) => {
     }
 })
 
-app.listen(process.env.PORT, () => {
+httpsServer.listen(process.env.PORT, () => {
     console.log('Server started')
 })
