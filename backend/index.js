@@ -81,5 +81,5 @@ app.post('/image', (req, res) => {
 })
 
 app.listen(process.env.PORT || 4000, "0.0.0.0", () => {
-    console.log('Server started')
+    console.log('Server started on port' + process.env.PORT)
 })

@@ -36,6 +36,7 @@ const Paint = observer(function () {
     const val = inputRef.current?.value.toString();
     if (Number(val?.length) > 4) {
       CanvasState.setUsername(val!);
+      inputRef.current!.value = ''
     } else {
       alert("Username has to be at least 5 characters long");
     }
@@ -50,14 +51,20 @@ const Paint = observer(function () {
       img.src = val.data;
       CanvasState.canvas.getContext('2d')?.drawImage(img, 0, 0, CanvasState.canvas.width, CanvasState.canvas.height);
     });
-    // const changeSize = () => {
-    //   CanvasState.setSize(wrapperRef.current!.offsetWidth * 0.95, wrapperRef.current!.offsetHeight * 0.95);
-    // };
-    // window.addEventListener("resize", changeSize);
-    // return () => {
-    //   window.removeEventListener("resize", changeSize);
-    // };
   }, []);
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        submit()
+        window.removeEventListener('keydown', handler)
+      }
+    }
+    window.addEventListener('keydown', handler)
+
+    return () => {
+      window.removeEventListener('keydown', handler)
+    }
+  }, [submit])
 
   useEffect(() => {
     if (!CanvasState.canvas) return
