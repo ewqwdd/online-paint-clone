@@ -80,6 +80,6 @@ app.post('/image', (req, res) => {
     }
 })
 
-httpsServer.listen(process.env.PORT, "0.0.0.0", () => {
+httpsServer.listen(process.env.PORT || 4000, "0.0.0.0", () => {
     console.log('Server started')
 })
