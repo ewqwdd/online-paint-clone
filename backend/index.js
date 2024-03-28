@@ -21,7 +21,7 @@ const options = {
     cert: fs.readFileSync(path.join(__dirname, 'cert.pem'), 'utf-8')
   };
 const httpsServer = createServer(options, app);
-const expressWs = require('express-ws')(app, httpsServer);
+const expressWs = require('express-ws')(app);
 const aWss = expressWs.getWss()
 
 app.ws('/', (ws, req) => {
@@ -80,6 +80,6 @@ app.post('/image', (req, res) => {
     }
 })
 
-httpsServer.listen(process.env.PORT || 4000, "0.0.0.0", () => {
+app.listen(process.env.PORT || 4000, "0.0.0.0", () => {
     console.log('Server started')
 })
