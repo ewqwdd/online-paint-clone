@@ -8,12 +8,20 @@ interface Dimmension {
   height: number
   width: number
 }
+const colors = [
+  '#646CFF',
+  '#7A64FF',
+  '#6486FF',
+  '#525AE0',
+  '#5E66F6'
+]
 
 
 const createCircles = (num: number, side?: boolean) => {
   const circles = []
   for (let i = 0; i<num; ++i) {
-    circles.push(new Circle("#646cff", window.innerWidth, window.innerHeight, Math.random() * 0.01, side))
+    const randomIndex = Math.floor(Math.random() * colors.length)
+    circles.push(new Circle(colors[randomIndex], window.innerWidth, window.innerHeight, Math.random() * 0.01, side))
   }
   return circles
 }

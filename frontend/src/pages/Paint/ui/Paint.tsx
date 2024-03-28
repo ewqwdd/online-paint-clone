@@ -5,13 +5,11 @@ import CanvasState from "../../../store/CanvasState";
 import ToolState from "../../../store/ToolState";
 import { Brush } from "../../../tools/Brush";
 import Modal from "react-modal";
-import { Draw, Message } from "../model/types";
-import { Square } from "../../../tools/Square";
-import { Ellipse } from "../../../tools/Ellipse";
+import { Message } from "../model/types";
 import NotificationState from "../../../store/NotificationState";
 import axios from "axios";
 import { useThrothling } from "../../../lib/utils/hooks/useThrothling";
-import { Eraser } from "../../../tools/Eraser";
+import { drawHandler } from "../model/drawHandlers";
 
 const Paint = observer(function () {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -52,6 +50,7 @@ const Paint = observer(function () {
       CanvasState.canvas.getContext('2d')?.drawImage(img, 0, 0, CanvasState.canvas.width, CanvasState.canvas.height);
     });
   }, []);
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
@@ -83,7 +82,8 @@ const Paint = observer(function () {
         if (parsed.type === "connection") {
           parsed.username && NotificationState.add(`${parsed.username} has just connected!`);
         } else {
-          drawHandler(parsed);
+          const ctx = canvasRef.current?.getContext('2d')
+          ctx && drawHandler(parsed, ctx, addUndoList, redoClear);
         }
         postImage()
       };
@@ -91,63 +91,7 @@ const Paint = observer(function () {
     }
   }, [CanvasState.username]);
 
-  const drawHandler = (msg: Draw) => {
-    const figure = msg.figure;
-    const ctx = canvasRef.current?.getContext("2d");
-    if (!ctx) return;
-    switch (figure.type) {
-      case "brush":
-        ctx.save();
-        if (msg.color) {
-          ctx.strokeStyle = msg.color;
-        }
-        if (msg.lineWidth) {
-          ctx.lineWidth = msg.lineWidth;
-        }
-        Brush.draw(ctx, figure.x, figure.y);
-        ctx.restore();
-        break;
-      case "eraser":
-          ctx.save();
-          if (msg.lineWidth) {
-            ctx.lineWidth = msg.lineWidth;
-          }
-          Eraser.draw(ctx, figure.x, figure.y);
-          ctx.restore();
-          break;
-      case "finish":
-        ctx.beginPath();
-        addUndoList();
-        redoClear();
-        break;
-      case "rect":
-        ctx.save();
-        if (msg.color) {
-          ctx.fillStyle = msg.color;
-        }
-        Square.draw(ctx, figure.startX, figure.startY, figure.endX, figure.endY);
-        ctx.restore();
-        addUndoList();
-        redoClear();
-        break;
-      case "ellipse":
-        ctx.save();
-        if (msg.color) {
-          ctx.fillStyle = msg.color;
-        }
-        Ellipse.draw(ctx, figure.startX, figure.startY, figure.endX, figure.endY);
-        ctx.restore();
-        addUndoList();
-        redoClear();
-        break;
-      case "undo":
-        CanvasState.undo();
-        break;
-      case "redo":
-        CanvasState.redo();
-        break;
-    }
-  };
+  
 
   return (
     <>

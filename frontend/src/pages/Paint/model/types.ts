@@ -47,6 +47,6 @@ interface Redo {
   type: "redo";  
 }
 
-type Figure = Brush | Finish | Rect | Undo | Ellipse | Redo | Eraser;
+export type Figure = Brush | Finish | Rect | Undo | Ellipse | Redo | Eraser;
 
 export type Message = Connection | Draw;
