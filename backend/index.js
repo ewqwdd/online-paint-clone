@@ -7,7 +7,13 @@ const { createServer } = require('https');
 const fs = require('fs')
 
 const app = express()
-app.use(cors());
+const corsOptions = {
+    origin:'*', 
+    credentials:true,
+    optionSuccessStatus:200,
+ }
+ 
+app.use(cors(corsOptions));
 require('dotenv').config()
 app.use(bodyParser.json())
 const options = {
